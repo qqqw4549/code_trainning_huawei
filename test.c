@@ -1,27 +1,14 @@
 #include<stdio.h>
 #include<string.h>
 int main(){
-    int n=0,i=0,j=0;
-    scanf("%d",&n);
-    char table[n][100];
-    char temp[100];
-    for(i=0;i<n;i++)
-    {
-        scanf("%s",table[i]);
-    }    
-    for(i=0;i<n;i++)
-    for(j=0;j<n-i-1;j++)
-    {
-        if(strcmp(table[j],table[j+1])>0)
-        {
-            temp=table[j];
-            table[j]=table[j+1];
-            table[j+1]=temp;
-        }
+    int i=0,N=0,m=0,max=0;
+    scanf("%d %d",&N,&m);
+    int *v=malloc(sizeof(int)*m);
+    int *p=malloc(sizeof(int)*m);
+    int *q=malloc(sizeof(int)*m);
+    for(i=0;i<m;i++){
+        scanf("%d %d %d",&v[i],&p[i],&q[i]);
     }
-    for(i=0;i<n;i++)
-    {
-        printf("%s\n",table[i]);
-    }
+    
 }
 

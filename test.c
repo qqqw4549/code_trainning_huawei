@@ -1,14 +1,16 @@
 #include<stdio.h>
 #include<string.h>
 int main(){
-    int i=0,N=0,m=0,max=0;
-    scanf("%d %d",&N,&m);
-    int *v=malloc(sizeof(int)*m);
-    int *p=malloc(sizeof(int)*m);
-    int *q=malloc(sizeof(int)*m);
-    for(i=0;i<m;i++){
-        scanf("%d %d %d",&v[i],&p[i],&q[i]);
+    char * string[1000];
+    int left=0,right=0,i=0,p=0;
+
+    gets(string);
+
+    while(string[p]!='\0'){
+        
+        p++;
     }
     
+    printf("%d,%d\n",left,right);
 }
 

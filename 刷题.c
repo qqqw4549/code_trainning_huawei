@@ -439,6 +439,140 @@ int main(){
 开发一个坐标计算工具， A表示向左移动，D表示向右移动，W表示向上移动，S表示向下移动。从（0,0）点开始移动，
 从输入字符串里面读取一些坐标，并将最终输入结果输出到输出文件里面。
 */
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+int getops(char * str,int len){
+    if(*str=='W' || *str=='A' ||*str=='S' || *str=='D'){
+        if(len==2){
+            if(isdigit(*(str+1)))
+            return *(str+1)-'0';
+        }else if(len==3){
+            if(isdigit(*(str+1)) && isdigit(*(str+2)))
+            return (*(str+1)-'0')*10+*(str+2)-'0';
+        }//else return 0;
+    }
+    return 0;
+}
+int main(){
+    char * string[1000];
+    while(gets(string)){
+        char * s1=string;
+        char * s2=string;
+        int left=0,right=0,i=0,len=0;
+        while(*s2!='\0'){
+            if(*s2 == ';'){
+                len=s2-s1;
+                if(len==2 || len==3){
+                    int num=0;
+                    num=getops(s1,len);
+                    if(num)
+                    {
+                        switch(*(s1)){
+                            case 'W':{right+=num;break;}
+                            case 'A':{left-=num;break;}
+                            case 'S':{right-=num;break;}
+                            case 'D':{left+=num;break;}
+                        }
+                    }    
+                }
+                s1=s2+1;
+            }
+            s2++;
+        }
+        printf("%d,%d\n",left,right);
+    }
+}
+/*
+请解析IP地址和对应的掩码，进行分类识别。要求按照A/B/C/D/E类地址归类，不合法的地址和掩码单独归类。
+所有的IP地址划分为 A,B,C,D,E五类
+A类地址1.0.0.0~126.255.255.255;
+B类地址128.0.0.0~191.255.255.255;
+C类地址192.0.0.0~223.255.255.255;
+D类地址224.0.0.0~239.255.255.255；
+E类地址240.0.0.0~255.255.255.255
+私网IP范围是：
+10.0.0.0～10.255.255.255
+172.16.0.0～172.31.255.255
+192.168.0.0～192.168.255.255
+子网掩码为二进制下前面是连续的1，然后全是0。（例如：255.255.255.32就是一个非法的掩码）
+
+解题思路：
+IP地址有效性好判断，4个整数，范围0-255
+合法的子网掩码是前面全是1后面全是0组成  
+1子网掩码是32bit，由四个整数组成，每个整数为8位，范围0-255之间。
+2全0全1的掩码是非法的
+3最后一个1必须在第一个0的前面
+
+主机号 = IP地址 & 子网掩码
+*/
+#include<stdio.h>
+#include<string.h>
+int err=0,i=0,A=0,B=0,C=0,D=0,E=0,p_IP=0,p=0;
+
+int check_ip_mask_range(int * ip){
+    int cnt=0;
+    for(i=0;i<8;i++){
+        if(ip[i]>=0 && ip[i]<=255)cnt++;
+    }
+    if(cnt<8){err++;return 0;}
+    return 1;
+}
+int check_mask(int * mask){
+    if(mask[4]==0 || mask[7]==255)
+        err++;
+    else{
+        for(i=4;i<8;i++)
+        {
+            if(mask[i]==255)
+                continue;
+            int sum=0,j=0;
+            for(j=i+1;j<8;j++)
+            {
+                sum+=mask[j];
+            }
+            if(sum==0 && (mask[i]==254 || mask[i]==252 || mask[i]==248 || mask[i]==240 || mask[i]==192 || mask[i]==128 || mask[i]==128 | mask[i]==0))
+            {
+                p=1;
+                return 1;
+            }
+            else {err++;return 0;}
+        }
+    }return 0;
+}
+int count(int * ip)
+{
+    if (ip[0] >= 1 && ip[0] <= 126) A++;
+    else if (ip[0] >= 128 && ip[0] <= 191) B++;
+    else if (ip[0] >= 192 && ip[0] <= 223) C++;
+    else if (ip[0] >= 224 && ip[0] <= 239) D++;
+    else if (ip[0] >= 240 && ip[0] <= 255) E++;
+    if (ip[0] == 10 || (ip[0] == 172 && ip[1] >= 16 && ip[1] <= 31) || (ip[0] == 192 && ip[1] == 168)) p_IP++;
+}
+
+int main(){
+   int temp[8];
+   while(scanf("%d.%d.%d.%d~%d.%d.%d.%d",&temp[0],&temp[1],&temp[2],&temp[3],&temp[4],&temp[5],&temp[6],&temp[7])!=EOF){
+       if(check_ip_mask_range(temp))
+       check_mask(temp);
+       if(p)
+       count(temp);
+       p=0;
+   }
+    printf("%d %d %d %d %d %d %d\n", A, B, C, D, E, err, p_IP);
+    return 0;   
+}
+
+/*
+题目描述
+开发一个简单错误记录功能小模块，能够记录出错的代码所在的文件名称和行号。
+处理： 
+1、 记录最多8条错误记录，循环记录，对相同的错误记录（净文件名称和行号完全匹配）只记录一条，错误计数增加；
+
+2、 超过16个字符的文件名称，只记录文件的最后有效16个字符；
+
+3、 输入的文件可能带路径，记录文件名称不能带路径。
+*/
 
 
 

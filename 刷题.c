@@ -573,6 +573,61 @@ int main(){
 
 3、 输入的文件可能带路径，记录文件名称不能带路径。
 */
+#include<stdio.h>
+#include<string.h>
+#include <malloc.h>
+typedef struct Node{
+    char file[100];
+    int line;
+    int err;
+}node;
+
+int main()
+{
+    char * index;
+    int length=0,count=0,i=0,j=0;
+    node *log,*log_array[1000];
+    log = (node *)malloc(sizeof(node));
+    while ((scanf("%s %d", log->file,&log->line)) != EOF){   
+        index=strrchr(log->file,'\\');
+        
+        index++;
+        length=strlen(index);
+        if(length>16)
+        index+=(length-16);
+        
+        for (i = 0;i < count;++i) {
+            if (strcmp(log_array[i]->file, index) == 0) {
+                if (log_array[i]->line == log->line) {
+                    log_array[i]->err++; 
+                    break;
+                }
+            }
+        }
+
+        if(count==i){
+            log_array[i]=(node *)malloc(sizeof(node));
+            strcpy(log_array[i]->file,index);
+            log_array[i]->line=log->line;
+            log_array[i]->err=1;
+            count++;
+        }
+    }
+    if(count > 8){
+        j = count-8;
+    }
+    for(;j<count;j++){
+        printf("%s %d %d\n",log_array[j]->file,log_array[j]->line,log_array[j]->err);
+    }return 0;
+}   
+/*
+题目描述
+密码要求:
+1.长度超过8位
+2.包括大小写字母.数字.其它符号,以上四种至少三种
+3.不能有相同长度超2的子串重复
+说明:长度超过2的子串
+*/
 
 
 

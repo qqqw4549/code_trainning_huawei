@@ -2,27 +2,37 @@
 #include<string.h>
 #include <malloc.h>
 
-char * get_pwd(char * str){
-    int i=0,len=strlen(str);
-    for(i=0;i<len;i++){
-        if('A'<=str[i] && str[i]<'Z')str[i]=str[i]+33;
-        else if('Z'==str[i])str[i]='a';
-        else if('a'<=str[i] && str[i]<='o'){
-            str[i]=(str[i]-'a')/3+2+'0';
-        }
-        else if('o'<str[i] && str[i]<'t')str[i]='0'+7;
-        else if('s'<str[i] && str[i]<'w')str[i]='0'+8;
-        else if('v'<str[i] && str[i]<='z')str[i]='0'+9;
-    }  
-    return str;
+char * target(char * str)
+{
+	int bitmap[256]={0};
+	int temp[100];
+	int i=0,len=strlen(str),min=1;
+	for(i=0;i<len;i++){
+		if(bitmap[str[i]]){
+			bitmap[str[i]]++;
+		}
+		else bitmap[str[i]]=1;
+	}
+	for(i='a';i<='z';i++){
+		if(bitmap[i]){
+			if(bitmap[i]<min){
+				min=bitmap[i];
+			}
+		}
+	}
+	for(i=0;i<len;i++){
+		if(bitmap[str[i]]!=min){
+			printf("%c",str[i]);
+		}
+	}
+	printf("\n");
 }
-
 int main()
 {
-    char pwd[100];
-    int i=0,count=0;
-    while(scanf("%s",pwd)!=EOF){
-        printf("%s\n",get_pwd(pwd));
+    char * string[100];
+
+    while(scanf("%s",&string)!=EOF){
+       target(string);
     } 
     return 0;
 }   

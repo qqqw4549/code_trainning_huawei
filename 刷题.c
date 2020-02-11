@@ -672,8 +672,101 @@ int main()
 }   
 
 /*
-
+有这样一道智力题：“某商店规定：三个空汽水瓶可以换一瓶汽水。小张手上有十个空汽水瓶，
+她最多可以换多少瓶汽水喝？”答案是5瓶，方法如下：先用9个空瓶子换3瓶汽水，喝掉3瓶满的，
+喝完以后4个空瓶子，用3个再换一瓶，喝掉这瓶满的，这时候剩2个空瓶子。然后你让老板先借给你一瓶汽水
+，喝掉这瓶满的，喝完以后用3个空瓶子换一瓶满的还给老板。如果小张手上有n个空汽水瓶，最多可以换多少瓶汽水喝？
 */
+#include<stdio.h>
+#include<string.h>
+#include <malloc.h>
+
+int max_get(int empty){
+    int max=0,new=0;
+    //每三瓶可以换一瓶
+    while(empty>=3){
+        new=empty/3;
+        max+=new;
+        empty=empty%3+new;
+    }
+    if(empty==2)max++;
+    return max;
+}
+int main()
+{
+    int empty=0;
+    while(scanf("%d",&empty)!=EOF){
+        printf("%d\n",max_get(empty));
+    } 
+    return 0;
+}   
+
+/*
+实现删除字符串中出现次数最少的字符，若多个字符出现次数一样，则都删除。
+输出删除这些单词后的字符串，字符串中其它字符保持原来的顺序。
+*/
+#include<stdio.h>
+#include<string.h>
+#include <malloc.h>
+
+char * target(char * str)
+{
+    int bitmap[256]={0};
+    int temp[100];
+    int i=0,len=strlen(str),min=1;
+    for(i=0;i<len;i++){
+        if(bitmap[str[i]]){
+            bitmap[str[i]]++;
+        }
+        else bitmap[str[i]]=1;
+    }
+    for(i='a';i<='z';i++){
+        if(bitmap[i]){
+            if(bitmap[i]<min){
+                min=bitmap[i];
+            }
+        }
+    }
+    for(i=0;i<len;i++){
+        if(bitmap[str[i]]!=min){
+            printf("%c",str[i]);
+        }
+    }
+    printf("\n");
+}
+int main()
+{
+    char * string[100];
+
+    while(scanf("%s",&string)!=EOF){
+       target(string);
+    } 
+    return 0;
+}   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
